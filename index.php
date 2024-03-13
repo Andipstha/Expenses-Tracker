@@ -1,6 +1,15 @@
 <?php
 require('./includes/db_conn.php');  // Database connection
 
+$delete = false;
+if(isset($_GET['delete'])){
+    $id = $_GET['delete'];
+    $sql = "DELETE FROM expenses WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+    if($result){
+        $delete = true;
+    }
+}
 $sql = "SELECT * FROM categories";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -15,10 +24,23 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expenses Tracker</title>
 
+    <!--  Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
+
+    <?php
+        if($delete){
+        echo " 
+            <div id='success-alert' class='alert alert-success alert-dismissible fade show' role='alert'>
+                <strong>Success!</strong>Your transaction has been deleted successfully.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+        }
+    ?>
 
     <h1>Expenses Tracker</h1>
 
@@ -41,7 +63,7 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
             $result1 = mysqli_query($conn, $sql1);
             if (mysqli_num_rows($result1) > 0) {
                 while($row1 = mysqli_fetch_assoc($result1)) {
-                    echo "<tr><td>".$row1["title"]."</td><td>".$row1["amount"]."</td><td>action</td><td>action</td></tr>";
+                    echo "<tr><td>".$row1["title"]."</td><td>".$row1["amount"]."</td><td>action</td><td><button class='delete btn btn-danger btn-sm' id=d" . $row1['id'] . ">x</button></td></tr>";
                 }
             } else {
                 echo "0 results";
@@ -57,7 +79,7 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <div class="inputs">
                     <div class="inputitem">
                         <p style="width: 9rem">Entry type: </p>
-                        <select id='itemType' name="category_id">
+                        <select class="form-control" id='itemType' name="category_id">
                             <?php
                                 foreach($row as $value) {
                                     echo "<option value='{$value['id']}'>{$value['label']}</option>";
@@ -67,25 +89,28 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     </div>
                     <div class="inputitem">
                         <p style="width: 9rem">Name:</p>
-                        <input type="text" name="ename" id="name" value="" placeholder="name" />
+                        <input class="form-control" type="text" name="ename" id="name" value="" placeholder="name" />
+                        
                     </div>
                     <div class="inputitem">
                         <p style="width: 9rem">Amount:</p>
-                        <input value="0" min="0" id="amount" name="eamount" type="number" placeholder="amount" />
+                        <input class="form-control" value="0" min="0" id="amount" name="eamount" type="number" placeholder="amount" />
                     </div>
                     <div class="inputitem">
                         <p style="width: 9rem">Date:</p>
-                        <input type="date" id="date" name="date" value="<?php echo date('Y-m-d'); ?>" />
+                        <input class="form-control" type="date" id="date" name="date" value="<?php echo date('Y-m-d'); ?>" />
                     </div>
                 </div>
-                <button type="submit">Add Expense</button>
+                <button class="btn btn-outline-primary btn-lg" type="submit">Add Expense</button>
             </form>
         </div>
 
 
     </div>
 
+    <script src="../assets/js/main.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
