@@ -42,13 +42,12 @@ This is a simple web application for tracking expenses. It allows users to add, 
 
 1. **Add Expense:**
 
-    - Click on the "Add Expense" button.
     - Fill in the expense details including category, title, amount, and date.
-    - Click on the "Submit" button to add the expense.
+    - Click on the "Add Expense" button to add the expense.
 
 2. **View Expenses:**
 
-    - Click on the "View Expenses" button to see all the expenses listed.
+    Upon accessing the application, all expenses are listed.
     - You can filter expenses by category or date.
 
 <!-- 3. **Edit Expense:**
