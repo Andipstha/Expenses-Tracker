@@ -1,15 +1,9 @@
 <?php
 require('./includes/db_conn.php');  // Database connection
+include './pages/delete_transaction.php';
 
-$delete = false;
-if(isset($_GET['delete'])){
-    $id = $_GET['delete'];
-    $sql = "DELETE FROM expenses WHERE id = $id";
-    $result = mysqli_query($conn, $sql);
-    if($result){
-        $delete = true;
-    }
-}
+
+
 $sql = "SELECT * FROM categories";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -26,8 +20,19 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     <!--  Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.2/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
 </head>
 
 <body>
@@ -48,7 +53,7 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="root">
         <div id="items">
             <h2>Expenses</h2>
-            <table>
+            <table class="table" id="myTable" >
                 <thead>
                     <tr>
                         <th>Name</th>
